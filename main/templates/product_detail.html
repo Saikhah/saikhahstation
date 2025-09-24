@@ -14,3 +14,11 @@
 {% endif %}
 
 <a href="{% url 'main:show_main' %}">Kembali</a>
+
+{% if news.user %}
+    <p>Author: {{ news.user.username }}</p>
+{% else %}
+    <p>Author: Anonymous</p>
+{% endif %}
+
+{% endblock content %}
