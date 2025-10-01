@@ -245,3 +245,107 @@ Untuk memastikan setiap pengguna hanya bisa melihat dan mengelola berita yang me
 Kemudian, pada view create_news, saya mengubah proses penyimpanan form. Dengan form.save(commit=False), saya dapat memodifikasi objek berita sebelum disimpan, yaitu dengan menetapkan news_entry.user = request.user. Ini memastikan setiap berita baru secara otomatis terhubung dengan pengguna yang sedang login.
 
 Terakhir, saya mengimplementasikan fitur filter pada view show_main. Dengan News.objects.filter(user=request.user), saya hanya mengambil berita yang dibuat oleh pengguna yang sedang login, memastikan hak akses yang sesuai. Saya juga menambahkan opsi "All Articles" yang mengambil semua berita dengan News.objects.all(), memberikan fleksibilitas kepada pengguna.
+
+
+Tugas 5
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Jawab: 
+Urutan prioritas pengambilan atau penentuan aturan CSS mana yang akan diterapkan pada suatu elemen HTML didasarkan pada konsep spesifisitas (specificity). Semakin spesifik sebuah selector, semakin tinggi prioritasnya. Jika dua atau lebih aturan CSS menargetkan elemen yang sama, aturan dengan spesifisitas tertinggi akan diterapkan.
+
+Urutan prioritas (dari tertinggi ke terendah) adalah sebagai berikut:
+
+   1. Inline Styles: Aturan CSS yang ditulis langsung di dalam atribut style elemen HTML (misalnya, <div style="color: red;">). Ini memiliki prioritas tertinggi.
+
+   2. ID Selectors: Selector yang menggunakan atribut id (misalnya, #header).
+
+   3. Class Selectors, Attribute Selectors, dan Pseudo-classes: Selector yang menggunakan kelas (misalnya, .button), atribut (misalnya, [type="text"]), dan pseudo-classes (misalnya, :hover, :focus).
+
+   4. Element Selectors dan Pseudo-elements: Selector yang menggunakan nama tag elemen (misalnya, p, h1) dan pseudo-elements (misalnya, ::before, ::after).
+
+   5. Universal Selector, Combinators, dan Negation Pseudo-class: Selector universal (*), combinators (seperti +, >, ~,      ), dan negation pseudo-class (:not()). Ini memiliki spesifisitas terendah (selain !important).
+
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+Jawab:
+Responsive Design adalah pendekatan dalam pengembangan web yang memastikan layout dan elemen-elemen halaman web akan terlihat dan berfungsi dengan baik terlepas dari ukuran layar perangkat yang digunakan pengguna (misalnya, desktop, tablet, atau smartphone).
+
+Mengapa Penting?
+
+   1. Pengalaman Pengguna (UX) yang Lebih Baik: Pengguna tidak perlu melakukan zooming atau scrolling horizontal yang mengganggu, membuat interaksi lebih mulus dan nyaman di perangkat apapun.
+
+   2. Peningkatan SEO (Search Engine Optimization): Google dan mesin pencari lainnya memprioritaskan situs web yang mobile-friendly (responsif) dalam hasil pencarian mereka.
+
+   3. Jangkauan Pasar yang Lebih Luas: Dengan mayoritas traffic internet berasal dari perangkat seluler, responsive design memastikan bahwa aplikasi Anda dapat diakses oleh audiens terbesar.
+
+   4. Pemeliharaan yang Lebih Mudah: Mengelola satu codebase (satu situs responsif) jauh lebih efisien daripada membuat dan memelihara versi terpisah untuk desktop dan seluler.
+
+Contoh yang sudah menerapkan:
+Shopee, Tokopedia, Instagram, tampilan menyesuaikan layar HP maupun laptop. Navigasi tetap nyaman.
+
+Contoh yang belum menerapkan:
+Website lama milik instansi/sekolah yang masih statis, di HP teks terlalu kecil, user harus zoom in/out. Alasan: tidak pakai layout responsive (misalnya masih fixed pixel, bukan % atau flex/grid).
+
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+Jawab:
+![alt text](image-3.png)
+Cara Implementasi:
+Ketiga properti ini dapat diatur untuk keempat sisi elemen (atas, kanan, bawah, kiri) menggunakan sintaks ringkas (shorthand) atau sintaks spesifik:
+
+   1. Sintaks Shorthand (Ringkas):
+      CSS
+      /* Margin atau Padding */
+      margin: 10px; /* Semua 4 sisi */
+      margin: 10px 20px; /* Atas/Bawah=10px, Kanan/Kiri=20px */
+      margin: 10px 20px 30px 40px; /* Atas=10, Kanan=20, Bawah=30, Kiri=40 */
+
+      /* Border */
+      border: 2px dashed #333; /* Ketebalan, Gaya, Warna */
+
+   2. Sintaks Spesifik (Individual):
+      CSS
+
+      padding-top: 15px;
+      margin-left: auto; /* Umum untuk centering */
+      border-bottom: 1px solid red;
+
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+Jawab:
+Flexbox (Flexible Box Layout) dan Grid Layout (CSS Grid) adalah dua modul layout dua dimensi yang kuat di CSS, yang dirancang untuk membantu pengembang mengatur dan menata elemen-elemen HTML dengan cara yang responsif dan efisien.
+
+   1. Flexbox (Flexible Box Layout)
+   Konsep Inti: Flexbox dirancang untuk tata letak satu dimensi—baik dalam baris (row) maupun kolom (column) pada satu waktu. Ini sangat ideal untuk mendistribusikan ruang di antara item dalam antarmuka, menyelaraskan navigasi, atau membuat komponen yang mudah beradaptasi.
+
+   Kegunaan Utama:
+      1. Penyelarasan Item: Memungkinkan penyelarasan vertikal (menggunakan align-items) dan horizontal (menggunakan justify-content) yang mudah, bahkan ketika item memiliki ketinggian/lebar yang berbeda.
+
+      2. Navigasi Bar: Membuat navbar yang responsif di mana tautan dapat diatur dengan rapi di satu baris.
+
+      3. Komponen: Membuat komponen seperti kartu (cards) atau widget di mana konten perlu diurutkan ulang atau disesuaikan ukurannya berdasarkan ruang yang tersedia.
+
+      2. Grid Layout (CSS Grid)
+      Konsep Inti: CSS Grid dirancang untuk tata letak dua dimensi—secara bersamaan dalam baris (rows) dan kolom (columns). Ini adalah alat yang sempurna untuk merancang struktur halaman web secara keseluruhan.
+
+    Kegunaan Utama:
+      1. Layout Halaman Utama: Merancang tata letak header, sidebar, main content, dan footer yang kompleks.
+
+      2. Galeri dan Album: Membuat galeri gambar atau kartu yang itemnya harus diatur dalam pola baris dan kolom yang terstruktur.
+
+      3. Kontrol Tata Letak Total: Memberikan kontrol yang tepat atas bagaimana elemen-elemen menempati ruang di halaman, memungkinkan item untuk merentang beberapa baris atau kolom dengan mudah.
+
+5.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+Jawab:
+Yang saya lakukan pertama adalah menyiapkan struktur dasar aplikasi. Pada file base.html, saya menambahkan <meta name="viewport"> agar tampilan bisa adaptif di perangkat mobile. Setelah itu, saya menghubungkan Tailwind CSS melalui CDN supaya seluruh styling bisa langsung digunakan.
+
+Langkah berikutnya adalah menyiapkan CSS kustom. Saya membuat file global.css yang berisi class seperti .form-style untuk menyamakan tampilan semua input form. File ini saya hubungkan ke base.html menggunakan {% load static %} sehingga setiap form memiliki gaya yang konsisten.
+
+Untuk persiapan deployment, saya menambahkan WhiteNoise middleware pada settings.py. Tujuannya adalah agar file CSS dan JavaScript tetap bisa diakses meskipun aplikasi dijalankan dalam mode produksi (DEBUG=False).
+
+Setelah itu, saya membangun antarmuka aplikasi, dimulai dari navbar. Navbar saya buat di file terpisah navbar.html. Dengan utility classes Tailwind, saya atur posisinya fixed di bagian atas layar. Saya juga mengatur responsivitasnya: pada layar besar menu tampil penuh (md:flex), sedangkan pada layar kecil menu disembunyikan dan diganti dengan tombol hamburger. Untuk membuat tombol hamburger berfungsi, saya menambahkan JavaScript sederhana sebagai toggle menu.
+
+Langkah selanjutnya adalah mengatur halaman login dan register. Saya menggunakan layout berupa card putih di tengah layar dengan latar belakang abu-abu muda. Pada setiap input field, saya menerapkan class .form-style dari global.css. Saya juga menampilkan pesan error atau success dari Django dengan kotak berwarna berbeda: merah untuk error dan hijau untuk sukses.
+
+Setelah antarmuka siap, saya melanjutkan pada implementasi fitur back-end. Untuk fitur update produk, saya membuat fungsi edit_product(request, id) di views.py. Data produk lama saya ambil dengan get_object_or_404. Kemudian, saya inisialisasi form menggunakan ProductForm(instance=product) agar data lama muncul di form. Jika pengguna melakukan submit, Django akan memvalidasi input. Jika valid, form.save() memperbarui produk yang sudah ada, lalu pengguna diarahkan kembali ke halaman utama.
+
+Untuk fitur delete produk, saya membuat fungsi delete_product(request, id). Objek produk saya ambil berdasarkan ID, kemudian langsung saya hapus dengan product.delete(). Setelah itu, pengguna saya redirect ke halaman daftar produk untuk memastikan data benar-benar terhapus.
+
+Dengan urutan langkah tersebut, aplikasi manajemen produk yang saya buat sudah memiliki tampilan responsif, styling yang konsisten, serta fungsi dasar untuk mengubah dan menghapus data produk.
+\

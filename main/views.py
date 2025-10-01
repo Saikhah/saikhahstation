@@ -3,10 +3,9 @@ from main.forms import ProductForm
 from main.models import Product
 from django.http import HttpResponse
 from django.core import serializers
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
+
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
@@ -18,34 +17,33 @@ def show_main(request):
     filter_type = request.GET.get("filter", "all")  # default 'all'
 
     if filter_type == "all":
-        Product_list = Product.objects.all()
+        product_list = Product.objects.all()
     else:
-        Product_list = Product.objects.filter(user=request.user)
-
+        product_list = Product.objects.filter(user=request.user)
+    
     context = {
         'npm': '2406436045',
         'name': request.user.username,
         'class': 'PBP D',
-        'Product_list': Product_list,
+        'product_list': product_list,
         'last_login': request.COOKIES.get('last_login', 'Never')
     }
-    return render(request, "main.html",context)
+    return render(request, "main.html", context)
 
 @login_required(login_url='/login')
 def create_product(request):
     form = ProductForm(request.POST or None)
 
     if form.is_valid() and request.method == 'POST':
-        Product_entry = form.save(commit = False)
-        Product_entry.user = request.user
-        Product_entry.save()
+        product_entry = form.save(commit=False)
+        product_entry.user = request.user
+        product_entry.save()
         return redirect('main:show_main')
 
     context = {
         'form': form
     }
-
-    return render(request, "create_news.html", context)
+    return render(request, "create_product.html", context)
 
 @login_required(login_url='/login')
 def show_product(request, id):
@@ -72,7 +70,7 @@ def show_xml_by_id(request, product_id):
     except Product.DoesNotExist:
         return HttpResponse(status=404)
 
-# JSON by ID
+
 def show_json_by_id(request, product_id):
     try:
         product_item = Product.objects.get(pk=product_id)
@@ -90,7 +88,7 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('main:login')
-    context = {'form':form}
+    context = {'form': form}
     return render(request, 'register.html', context)
 
 def login_user(request):
@@ -114,3 +112,20 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))

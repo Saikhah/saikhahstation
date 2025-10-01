@@ -1,24 +1,80 @@
-<h1>{{ product.name }}</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<p>Harga: Rp{{ product.price }}</p>
-<p>Kategori: {{ product.category }}</p>
+{% block meta %}
+<title>{{ product.name }} - SaikhahStation</title>
+{% endblock meta %}
 
-{% if product.thumbnail %}
-  <img src="{{ product.thumbnail }}" alt="thumbnail">
-{% endif %}
+{% block content %}
+<div class="bg-pink-50 w-full min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Back Navigation -->
+        <div class="mb-6">
+            <a href="{% url 'main:show_main' %}" class="text-pink-600 hover:text-pink-800 font-medium transition-colors">
+                ← Back to Products
+            </a>
+        </div>
+        
+        <!-- Product Detail -->
+        <article class="bg-white rounded-lg border border-pink-200 overflow-hidden shadow-sm">
+            
+            <!-- Header -->
+            <div class="p-6 sm:p-8">
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-pink-400 text-white">
+                        {{ product.category }}
+                    </span>
+                    {% if product.is_featured %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-pink-100 text-pink-700">
+                            Featured
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                    {{ product.name }}
+                </h1>
+                
+                <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+                    <span class="text-pink-600 font-semibold">Rp{{ product.price }}</span>
+                </div>
+            </div>
 
-<p>{{ product.description }}</p>
+            <!-- Thumbnail -->
+            {% if product.thumbnail %}
+                <div class="px-6 sm:px-8">
+                    <img src="{{ product.thumbnail }}" 
+                         alt="{{ product.name }}" 
+                         class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
+                </div>
+            {% endif %}
 
-{% if product.is_featured %}
-  <p><strong>Featured</strong></p>
-{% endif %}
+            <!-- Description -->
+            <div class="p-6 sm:p-8">
+                <div class="prose prose-lg max-w-none">
+                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+                        {{ product.description }}
+                    </div>
+                </div>
+            </div>
 
-<a href="{% url 'main:show_main' %}">Kembali</a>
-
-{% if news.user %}
-    <p>Author: {{ news.user.username }}</p>
-{% else %}
-    <p>Author: Anonymous</p>
-{% endif %}
-
+            <!-- Author Info -->
+            <div class="border-t border-pink-200 p-6 sm:p-8 bg-pink-50">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="font-medium text-gray-900">
+                            {% if product.user %}
+                                <p>Author: {{ product.user.username }}</p>
+                            {% else %}
+                                <p>Author: Anonymous</p>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm text-gray-500">Product owner</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
 {% endblock content %}

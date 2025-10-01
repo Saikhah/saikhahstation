@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
-<title>Create Product - Saikhah Station</title>
+<title>Edit Product - Saikhah Station</title>
 {% endblock meta %}
 
 {% block content %}
@@ -18,11 +19,11 @@
     <!-- Form -->
     <div class="bg-white rounded-lg border border-pink-200 p-6 sm:p-8 form-style">
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-pink-900 mb-2">Tambah Product</h1>
-        <p class="text-pink-600">Masukkan detail produk baru ke dalam katalog Saikhah Station</p>
+        <h1 class="text-2xl font-bold text-pink-900 mb-2">Edit Product</h1>
+        <p class="text-pink-600">Perbarui detail produk yang ada di katalog Saikhah Station</p>
       </div>
       
-      <form method="post" class="space-y-6">
+      <form method="POST" class="space-y-6">
         {% csrf_token %}
         {% for field in form %}
           <div>
@@ -46,7 +47,7 @@
             Batal
           </a>
           <button type="submit" class="order-1 sm:order-2 flex-1 bg-pink-500 text-white px-6 py-3 rounded-md font-medium hover:bg-pink-600 transition-colors">
-            Simpan Product
+            Update Product
           </button>
         </div>
       </form>
