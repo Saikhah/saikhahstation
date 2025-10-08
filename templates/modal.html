@@ -1,0 +1,120 @@
+<!-- Modal -->
+<div id="crudModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-pink-100/60 backdrop-blur-sm">
+  <div id="crudModalContent" class="bg-white rounded-2xl shadow-xl w-11/12 sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-1/3 transform transition-all duration-200 scale-95 opacity-0 max-h-[90vh] overflow-y-auto border border-pink-200">
+
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-5 border-b border-pink-200 bg-pink-50 rounded-t-2xl">
+      <div>
+        <h3 class="text-2xl font-bold text-pink-600">🎀 Add New Product</h3>
+        <p class="text-sm text-gray-500 mt-1">Tambah koleksi baru untuk toko SaikhahStation kamu 💼</p>
+      </div>
+      <button type="button"
+        class="text-pink-400 hover:text-pink-600 hover:bg-pink-100 rounded-full p-2 transition"
+        onclick="hideModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="px-6 py-5 space-y-5">
+      <form id="productForm" class="space-y-5">
+        <div>
+          <label for="name" class="block text-sm font-semibold text-pink-700 mb-1">Product Name</label>
+          <input type="text" id="name" name="name"
+            class="w-full border border-pink-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition"
+            placeholder="Masukkan nama produk" required>
+        </div>
+
+        <div>
+          <label for="description" class="block text-sm font-semibold text-pink-700 mb-1">Description</label>
+          <textarea id="description" name="description" rows="3"
+            class="w-full border border-pink-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition resize-none"
+            placeholder="Deskripsi singkat produk kamu..." required></textarea>
+        </div>
+
+        <div>
+          <label for="price" class="block text-sm font-semibold text-pink-700 mb-1">Price (Rp)</label>
+          <input type="number" id="price" name="price" min="0"
+            class="w-full border border-pink-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition"
+            placeholder="Masukkan harga produk" required>
+        </div>
+
+        <div>
+          <label for="stock" class="block text-sm font-semibold text-pink-700 mb-1">Stock</label>
+          <input type="number" id="stock" name="stock" min="0"
+            class="w-full border border-pink-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition"
+            placeholder="Jumlah stok tersedia" required>
+        </div>
+
+        <div>
+          <label for="image_url" class="block text-sm font-semibold text-pink-700 mb-1">Image URL</label>
+          <input type="url" id="image_url" name="image_url"
+            class="w-full border border-pink-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition"
+            placeholder="https://example.com/image.jpg">
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="flex flex-col sm:flex-row gap-4 p-5 border-t border-pink-200 bg-pink-50 rounded-b-2xl">
+      <button type="button" id="cancelButton"
+        class="order-2 sm:order-1 w-full sm:w-auto px-5 py-2.5 border border-pink-300 text-pink-600 rounded-lg font-medium hover:bg-pink-100 transition"
+        onclick="hideModal()">Cancel</button>
+
+      <button type="submit" id="submitProduct" form="productForm"
+        class="order-1 sm:order-2 w-full sm:w-auto bg-pink-500 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-pink-600 shadow-md transition">
+        Save Product 💾
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Control Script -->
+<script>
+  function showModal() {
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modalContent.classList.remove('opacity-0', 'scale-95');
+      modalContent.classList.add('opacity-100', 'scale-100');
+    }, 50);
+  }
+
+  function hideModal() {
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+    modalContent.classList.remove('opacity-100', 'scale-100');
+    modalContent.classList.add('opacity-0', 'scale-95');
+    setTimeout(() => modal.classList.add('hidden'), 150);
+  }
+
+  async function addProductEntry() {
+    await fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#productForm')),
+    });
+
+    document.getElementById("productForm").reset();
+    hideModal();
+
+    if (typeof showToast === 'function') {
+      showToast('✨ Produk berhasil ditambahkan!', '', 'success');
+    } else {
+      alert("Produk berhasil ditambahkan!");
+    }
+
+    document.dispatchEvent(new CustomEvent('productAdded'));
+
+    return false;
+  }
+
+  document.querySelector("#productForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    addProductEntry();
+  });
+</script>

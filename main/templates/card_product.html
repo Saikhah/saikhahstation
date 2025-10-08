@@ -1,17 +1,19 @@
 {% load static %}
 
-<article class="bg-white rounded-lg border border-pink-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+<article class="bg-white rounded-xl border border-pink-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden">
   <!-- Thumbnail -->
   <div class="aspect-[16/9] relative overflow-hidden">
     {% if product.thumbnail %}
-      <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+      <img src="{{ product.thumbnail }}" class="w-full h-full object-cover">
     {% else %}
-      <div class="w-full h-full bg-pink-100"></div>
+      <div class="w-full h-full bg-pink-100 flex items-center justify-center text-pink-400 text-sm">
+        No Image
+      </div>
     {% endif %}
 
     <!-- Category Badge -->
     <div class="absolute top-3 left-3">
-      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-pink-400 text-white">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-pink-500 text-white shadow-sm">
         {{ product.category }}
       </span>
     </div>
@@ -19,8 +21,8 @@
     <!-- Status Badge -->
     {% if product.is_featured %}
       <div class="absolute top-3 right-3">
-        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-pink-100 text-pink-700">
-          Featured
+        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-pink-100 text-pink-700 border border-pink-200">
+          🌟 Featured
         </span>
       </div>
     {% endif %}
@@ -29,11 +31,13 @@
   <!-- Content -->
   <div class="p-5">
     <div class="flex items-center text-sm text-gray-500 mb-3">
-      <span class="font-medium text-pink-600">Rp{{ product.price }}</span>
+      <span class="font-semibold text-pink-600">Rp{{ product.price }}</span>
+      <span class="mx-2">•</span>
+      <span>{{ product.views }} views</span>
     </div>
 
     <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-      <a href="{% url 'main:show_product' product.id %}" class="hover:text-pink-500 transition-colors">
+      <a href="{% url 'main:show_product' product.id %}" class="hover:text-pink-600 transition-colors">
         {{ product.name }}
       </a>
     </h3>
@@ -49,11 +53,11 @@
           View details
         </a>
         <div class="flex space-x-2">
-          <a href="{% url 'main:edit_product' product.id %}" class="text-gray-600 hover:text-gray-700 text-sm transition-colors">
-            Edit
+          <a href="{% url 'main:edit_product' product.id %}" class="text-gray-500 hover:text-gray-700 text-sm transition-colors">
+            ✏️ Edit
           </a>
           <a href="{% url 'main:delete_product' product.id %}" class="text-red-500 hover:text-red-600 text-sm transition-colors">
-            Delete
+            🗑️ Delete
           </a>
         </div>
       </div>
